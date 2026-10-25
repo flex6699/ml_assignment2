@@ -1,0 +1,18 @@
+n = 9 samples, K = 3 classes, weak learner = depth-1 tree (stump)
+stump: x <= 4.50
+  i   x  y  w_before  h(x)  miss  w*exp(alpha*miss)  w_after
+  0   1  0  0.1111     0     0             0.1111  0.0556
+  1   2  0  0.1111     0     0             0.1111  0.0556
+  2   3  1  0.1111     0     1             0.4444  0.2222
+  3   4  0  0.1111     0     0             0.1111  0.0556
+  4   5  1  0.1111     1     0             0.1111  0.0556
+  5   6  1  0.1111     1     0             0.1111  0.0556
+  6   7  2  0.1111     1     1             0.4444  0.2222
+  7   8  1  0.1111     1     0             0.1111  0.0556
+  8   9  2  0.1111     1     1             0.4444  0.2222
+weighted error eps = sum of w_before over misclassified = 0.3333
+alpha = log((1-eps)/eps) + log(K-1) = 0.6931 + 0.6931 = 1.3863
+misclassified weights multiplied by exp(alpha) = 4.0000; normaliser Z = 2.0000
+after update: misclassified samples carry 0.6667 of the weight (was 0.3333), correct samples carry 0.3333
+sum of w_after = 1.0000
+hand check of alpha and weights: OK

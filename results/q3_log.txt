@@ -1,0 +1,53 @@
+seed=250201  R=30 resampled training sets, mean distinct faces per set = 159.6 of 240
+
+=== Q3(a) selected single tree, final bagging, selected boosting (no re-tuning) ===
+  tree_selected: loaded from cache
+  bag_selected: loaded from cache
+  boost_selected: loaded from cache
+        model |         bias2 |      variance | expected_sq_error |      acc_mean |       acc_std
+tree_selected |        0.3589 |        0.6092 |        0.9681 |        0.5158 |        0.0489
+ bag_selected |        0.5095 |        0.0254 |        0.5349 |        0.7733 |        0.0436
+boost_selected |        0.8821 |        0.0169 |        0.8990 |        0.3067 |        0.0702
+
+=== Q3(b) depth study: single trees and 100-tree bagging at each depth ===
+  tree_depth4: loaded from cache
+  bag_depth4: loaded from cache
+  tree_depth8: loaded from cache
+  bag_depth8: loaded from cache
+  tree_depth16: loaded from cache
+  bag_depth16: loaded from cache
+  tree_deepest: loaded from cache
+  bag_deepest: loaded from cache
+       config |          role |    tree_depth |        leaves | samples_per_leaf | single_face_leaves
+      depth 4 |       shallow |        4.0000 |        5.1333 |       46.9333 |        0.0000
+      depth 8 |         extra |        8.0000 |        9.3333 |       25.7939 |        0.0000
+     depth 16 |         extra |       16.0000 |       17.5667 |       13.6881 |        0.0000
+     selected |      selected |       35.0000 |       40.0333 |        5.9951 |        0.0000
+      deepest |   much deeper |       35.0000 |       40.0333 |        5.9951 |        0.0008
+
+       config |    tree_bias2 |      tree_var |     bag_bias2 |       bag_var |   var_removed | var_removed_frac
+      depth 4 |        0.8800 |        0.0493 |        0.8934 |        0.0078 |        0.0416 |        0.8424
+      depth 8 |        0.7871 |        0.1043 |        0.8065 |        0.0148 |        0.0895 |        0.8585
+     depth 16 |        0.6393 |        0.2240 |        0.6657 |        0.0206 |        0.2034 |        0.9082
+     selected |        0.3589 |        0.6092 |        0.5095 |        0.0254 |        0.5838 |        0.9583
+      deepest |        0.3588 |        0.6095 |        0.4826 |        0.0255 |        0.5840 |        0.9581
+
+       config |      tree_acc |       bag_acc |      acc_gain |  bias2_change | bag_disagreement | bag_tree_single_face_leaves
+      depth 4 |        0.0892 |        0.2613 |        0.1721 |        0.0134 |        0.9438 |        0.0146
+      depth 8 |        0.1546 |        0.4058 |        0.2512 |        0.0194 |        0.9195 |        0.0250
+     depth 16 |        0.2792 |        0.6200 |        0.3408 |        0.0264 |        0.8823 |        0.0335
+     selected |        0.5158 |        0.7733 |        0.2575 |        0.1506 |        0.8196 |        0.0359
+      deepest |        0.5158 |        0.8013 |        0.2854 |        0.1238 |        0.8049 |        0.2242
+
+=== Q3(c) largest bagging accuracy gain: depth 16 (+0.3408); deepest: +0.2854 ===
+
+=== Q3(d) final table (accuracies of the frozen models from Q1/Q2) ===
+        model | clean_test_acc | masked_test_acc |         bias2 |      variance | refit_acc_mean | refit_acc_std
+  single tree |        0.6625 |        0.2125 |        0.3589 |        0.6092 |        0.5158 |        0.0489
+      bagging |        0.9000 |        0.7875 |        0.5095 |        0.0254 |        0.7733 |        0.0436
+     boosting |        0.4875 |        0.4125 |        0.8821 |        0.0169 |        0.3067 |        0.0702
+
+        model |  masked_bias2 | masked_variance
+  single tree |        0.5994 |        0.7612
+      bagging |        0.6669 |        0.0264
+     boosting |        0.8895 |        0.0186

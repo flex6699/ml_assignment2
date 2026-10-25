@@ -1,0 +1,109 @@
+
+=== Q2(a) toy 3-class example, one complete SAMME round ===
+n = 9 samples, K = 3 classes, weak learner = depth-1 tree (stump)
+stump: x <= 4.50
+  i   x  y  w_before  h(x)  miss  w*exp(alpha*miss)  w_after
+  0   1  0  0.1111     0     0             0.1111  0.0556
+  1   2  0  0.1111     0     0             0.1111  0.0556
+  2   3  1  0.1111     0     1             0.4444  0.2222
+  3   4  0  0.1111     0     0             0.1111  0.0556
+  4   5  1  0.1111     1     0             0.1111  0.0556
+  5   6  1  0.1111     1     0             0.1111  0.0556
+  6   7  2  0.1111     1     1             0.4444  0.2222
+  7   8  1  0.1111     1     0             0.1111  0.0556
+  8   9  2  0.1111     1     1             0.4444  0.2222
+weighted error eps = sum of w_before over misclassified = 0.3333
+alpha = log((1-eps)/eps) + log(K-1) = 0.6931 + 0.6931 = 1.3863
+misclassified weights multiplied by exp(alpha) = 4.0000; normaliser Z = 2.0000
+after update: misclassified samples carry 0.6667 of the weight (was 0.3333), correct samples carry 0.3333
+sum of w_after = 1.0000
+hand check of alpha and weights: OK
+
+=== Q2(b) SAMME on faces: depth x rounds (selection on clean validation only) ===
+depth 1: completed all rounds
+depth 2: completed all rounds
+depth 3: completed all rounds
+depth 4: completed all rounds
+       depth |       rounds | learners_used |    train_acc |      val_acc
+           1 |           10 |           10 |       0.0500 |       0.0375
+           1 |           25 |           25 |       0.0917 |       0.0500
+           1 |           50 |           50 |       0.0875 |       0.0625
+           1 |          100 |          100 |       0.2208 |       0.0875
+           2 |           10 |           10 |       0.1375 |       0.1125
+           2 |           25 |           25 |       0.1750 |       0.1125
+           2 |           50 |           50 |       0.2750 |       0.1125
+           2 |          100 |          100 |       0.2125 |       0.0875
+           3 |           10 |           10 |       0.2333 |       0.1000
+           3 |           25 |           25 |       0.3000 |       0.1625
+           3 |           50 |           50 |       0.6625 |       0.2375
+           3 |          100 |          100 |       0.8125 |       0.2500
+           4 |           10 |           10 |       0.3542 |       0.1500
+           4 |           25 |           25 |       0.4917 |       0.1875
+           4 |           50 |           50 |       0.9167 |       0.2750
+           4 |          100 |          100 |       0.9958 |       0.3750
+
+FROZEN boosting: {'max_depth': 4, 'n_rounds': 100, 'seed': 139585692} {'depth': 4, 'rounds': 100, 'learners_used': 100, 'train_acc': 0.9958333333333333, 'val_acc': 0.375, 'test_acc': 0.4875, 'stop_reason': 'completed all rounds'}
+
+=== Q2(c) boosting vs bagging with 25 / 50 / 100 learners ===
+       model |     learners |    train_acc |      val_acc |     test_acc |   fit_time_s
+     bagging |           25 |       1.0000 |       0.8875 |       0.8250 |      18.8965
+    boosting |           25 |       0.4917 |       0.1875 |       0.2875 |       5.8366
+     bagging |           50 |       1.0000 |       0.8750 |       0.8500 |      37.5976
+    boosting |           50 |       0.9167 |       0.2750 |       0.3625 |      11.6434
+     bagging |          100 |       1.0000 |       0.9000 |       0.9000 |      74.5825
+    boosting |          100 |       0.9958 |       0.3750 |       0.4875 |      23.2664
+
+heavy-weight face: {'train_pos': 216, 'dataset_idx': 368, 'identity': 36, 'max_weight': 0.07608201367362034, 'max_weight_round': 38, 'uniform_weight': 0.004166666666666667, 'final_weight': 0.07086235173075929, 'rank_final': 1, 'learners_wrong': 88, 'learners_total': 100, 'most_common_wrong_class': 3, 'ensemble_correct_from_round': 3, 'ensemble_correct_at_end': True}
+round: weight used, weak-learner prediction (* = correct), running ensemble prediction
+  1:0.0042,0,0  2:0.0046,1,1  3:0.0053,36*,36  4:0.0008,3,3  5:0.0010,4,4  6:0.0015,12,12  7:0.0021,36*,36  8:0.0001,1,1
+  9:0.0003,31,1  10:0.0004,3,1  11:0.0005,2,1  12:0.0007,22,1  13:0.0010,14,1  14:0.0015,4,4  15:0.0023,16,4  16:0.0039,25,4
+  17:0.0059,26,4  18:0.0085,3,3  19:0.0117,2,3  20:0.0164,14,3  21:0.0243,36*,36  22:0.0020,4,4  23:0.0030,16,4  24:0.0045,13,4
+  25:0.0071,3,3  26:0.0102,2,3  27:0.0152,27,3  28:0.0231,12,3  29:0.0329,4,4  30:0.0533,36*,4  31:0.0040,39,4  32:0.0056,14,4
+  33:0.0078,3,3  34:0.0114,2,3  35:0.0162,9,3  36:0.0233,12,3  37:0.0356,4,4  38:0.0538,20,4  39:0.0761,36*,4  40:0.0061,8,4
+  41:0.0086,3,3  42:0.0125,5,3  43:0.0176,9,3  44:0.0254,14,3  45:0.0348,4,4  46:0.0511,21,4  47:0.0725,36*,4  48:0.0054,39,4
+  49:0.0078,32,4  50:0.0112,2,4  51:0.0180,10,4  52:0.0268,14,4  53:0.0396,4,4  54:0.0624,36*,4  55:0.0046,17,4  56:0.0072,12,4
+  57:0.0113,3,4  58:0.0164,9,4  59:0.0232,27,4  60:0.0344,15,4  61:0.0513,36*,36  62:0.0043,20,36  63:0.0064,17,36  64:0.0089,39,36
+  65:0.0127,2,36  66:0.0176,22,36  67:0.0252,27,36  68:0.0357,14,36  69:0.0529,36*,36  70:0.0048,12,36  71:0.0067,20,36  72:0.0097,39,36
+  73:0.0142,3,36  74:0.0200,2,36  75:0.0283,27,36  76:0.0410,14,36  77:0.0582,36*,36  78:0.0048,20,36  79:0.0073,18,36  80:0.0104,16,36
+  81:0.0139,3,36  82:0.0205,2,36  83:0.0294,7,36  84:0.0442,14,36  85:0.0644,36*,36  86:0.0048,39,36  87:0.0072,20,36  88:0.0105,13,36
+  89:0.0157,3,36  90:0.0223,22,36  91:0.0319,27,36  92:0.0509,14,36  93:0.0740,36*,36  94:0.0052,20,36  95:0.0078,39,36  96:0.0109,17,36
+  97:0.0154,3,36  98:0.0217,2,36  99:0.0348,22,36  100:0.0488,14,36
+
+=== Q2(d) single tree vs bagging vs boosting on clean and masked test ===
+       model |    clean_acc |   clean_conf |   masked_acc |  masked_conf
+        tree |       0.6625 |       0.9726 |       0.2125 |       1.0000
+     bagging |       0.9000 |       0.3866 |       0.7875 |       0.2881
+    boosting |       0.4875 |       0.1179 |       0.4125 |       0.1162
+share of split nodes testing masked pixels: {'tree': 0.0513, 'bagging': 0.0687, 'boosting_alpha_weighted': 0.0715, 'pixel_share_of_mask': 0.0625}
+single tree vs mask: {'masked_split_nodes': 2, 'masked_split_depths': [11, 22], 'masked_split_thresholds_positive': True, 'frac_test_faces_path_uses_mask': 0.7625, 'frac_tree_preds_changed_by_mask': 0.6875}
+prediction spread (distinct identities predicted, share of the most common one):
+  tree_test: {'distinct_predicted_ids': 37, 'share_of_most_common_prediction': 0.075}
+  tree_test_masked: {'distinct_predicted_ids': 11, 'share_of_most_common_prediction': 0.7625}
+  bagging_test: {'distinct_predicted_ids': 39, 'share_of_most_common_prediction': 0.05}
+  bagging_test_masked: {'distinct_predicted_ids': 36, 'share_of_most_common_prediction': 0.1}
+  boosting_test: {'distinct_predicted_ids': 27, 'share_of_most_common_prediction': 0.25}
+  boosting_test_masked: {'distinct_predicted_ids': 22, 'share_of_most_common_prediction': 0.2125}
+
+face with different mask response:
+  kind: bagging holds, boosting breaks
+  test_pos: 17
+  dataset_idx: 83
+  true: 8
+  bag_pred_clean: 8
+  bag_pred_masked: 8
+  bag_vote_true_clean: 0.58
+  bag_vote_true_masked: 0.36
+  bag_disagreement_clean: 0.6574
+  bag_disagreement_masked: 0.8404
+  bag_frac_trees_path_uses_mask: 0.73
+  bag_frac_trees_changed_by_mask: 0.44
+  boost_pred_clean: 8
+  boost_pred_masked: 14
+  boost_q_true_clean: 0.1153
+  boost_q_true_masked: 0.0952
+  boost_alpha_share_path_uses_mask: 0.2532
+  boost_alpha_share_flipped: 0.1108
+  boost_alpha_share_lost_true: 0.0202
+  boost_rounds_lost_true: [40, 94]
+  identity_final_weight_share: 0.0247
+  identity_uniform_share: 0.025
