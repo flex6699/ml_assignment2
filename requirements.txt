@@ -1,0 +1,4 @@
+# Python 3.11, 64-bit (install it first, see README.md)
+numpy==2.4.4
+scikit-learn==1.8.0
+matplotlib==3.10.8
